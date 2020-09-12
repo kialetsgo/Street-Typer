@@ -1,0 +1,13 @@
+.word-list {
+    list-style: none;
+}
+
+/* .input-field { 
+    top: 500px;
+} */
+
+footer {
+    position: absolute;
+    bottom: 10px;
+    right: 50px;
+}
