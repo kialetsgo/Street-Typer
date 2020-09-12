@@ -78,14 +78,53 @@ let wordDisplay = document.querySelector('.word-list')
 let easyButton = document.querySelector('#easy')
 let hardButton = document.querySelector('#hard')
 
+function setCurrentScore() {
+    score += 1;
+    scoreEl.innerHTML = score
+}
+
+function displayWordList(difficulty) {
+    for (let i = 0; i < words[difficulty].length; i++) {
+         let li = document.createElement("li")
+         li.classList.add('word')
+         li.append(words[difficulty][i])
+         wordDisplay.append(li)
+     }
+ }
+
+ function displayCurrentWord(count) {
+     let currentWordEl = document.querySelector('.current-word')
+     if (wordCount < words[level].length) {
+         currentWordEl.innerHTML = words[level][count]
+     }
+     else {
+         currentWordEl.innerHTML = ""
+     }
+ }
+
+function setHighScore() {
+    if (score > highScore) {
+         highScore = score;
+         highScoreEl.innerHTML = highScore
+        //  localStorage.setItem('highScore', highScore)
+    }
+    score = 0;
+    scoreEl.innerHTML = score
+}
+
+function gameOver() {
+
+}
+
+function startGame() {
+
+}
+
 window.onload = function() {
-    $("#static-modal").modal('show');
-    
+    $("#static-modal").modal('show')
+
     // let retrievedScores = localStorage.getItem('highscore')
     // console.log(retrievedScores)
-
-  
-
     easyButton.addEventListener('click', function() {
         let liEl = document.querySelectorAll('.word')
         if (liEl.length == 0) {
@@ -105,36 +144,25 @@ window.onload = function() {
             $("#static-modal").modal('hide');
         }  
     })
-   
-    // upon "Enter" key press in input box, run game algo
-    // inputField.addEventListener("keypress", function(e){
-    //     if (e.key === "Enter") {
-    //         if (inputField.value === words[level][wordCount]) {
-    //             console.log(words[level][wordCount]+ " is correct!")
-    //             wordCount += 1;
-    //             setCurrentScore()
-    //             // setHighScore()
-    //             return 
-    //         }
-    //     }
-    // })
 
-    //onchange
+    //onchange for "enter" key
     inputEl.oninput = function() {
         
         let liEl = document.querySelectorAll('.word')
-        // displayCurrentWord(wordCount)
             if (wordCount !== words[level].length) {
                 if (inputEl.value === words[level][wordCount]) { 
                     liEl[wordCount].style.color = 'green'
-                    liEl[wordCount].innerHTML = ""
-                    wordCount += 1;
-                    displayCurrentWord(wordCount)
-
+                    setTimeout(() => {
+                        liEl[wordCount].innerHTML = ""
+                        wordCount += 1;
+                        displayCurrentWord(wordCount)
+                        inputEl.value = ""
+                        setCurrentScore()
+                    }, 200);
+                }
+                else if(inputEl.value.length === words[level][wordCount].length && inputEl.value !== words[level][wordCount]) {
                     inputEl.value = ""
-                    setCurrentScore()
-                    return
-                }   
+                }
                 else {
                     liEl[wordCount].style.color = 'red'
                     // inputEl.value = ""
@@ -143,8 +171,10 @@ window.onload = function() {
             else {
                 alert("Game Over")
                 // $("#static-modal").modal('show');
+
                 // clear input field
                 inputEl.value = ""
+
                 // clear word display
                 let liEl = document.querySelectorAll('.word')
                 for(let i = 0; i < liEl.length; i++) {
@@ -153,46 +183,4 @@ window.onload = function() {
                 setHighScore()
             }
     }
-
-    function setCurrentScore() {
-        score += 1;
-        scoreEl.innerHTML = score
-    }
-
-    function displayWordList(difficulty) {
-        for (let i = 0; i < words[difficulty].length; i++) {
-             let li = document.createElement("li")
-             li.classList.add('word')
-             li.append(words[difficulty][i])
-             wordDisplay.append(li)
-         }
-     }
- 
-     function displayCurrentWord(count) {
-         let currentWordEl = document.querySelector('.current-word')
-         if (wordCount < words[level].length) {
-             currentWordEl.innerHTML = words[level][count]
-         }
-         else {
-             currentWordEl.innerHTML = ""
-         }
-     }
-
-    function setHighScore() {
-        if (score > highScore) {
-             highScore = score;
-             highScoreEl.innerHTML = highScore
-            //  localStorage.setItem('highScore', highScore)
-        }
-        score = 0;
-        scoreEl.innerHTML = score
-    }
-
-    function gameOver() {
-
-    }
-    function startGame() {
-
-    }
-
 };

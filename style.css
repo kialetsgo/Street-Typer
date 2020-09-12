@@ -2,9 +2,10 @@
     list-style: none;
 }
 
-/* .input-field { 
-    top: 500px;
-} */
+input {
+    width: 250px;
+    text-align:center;
+}
 
 footer {
     position: absolute;
