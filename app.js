@@ -84,26 +84,7 @@ window.onload = function() {
     // let retrievedScores = localStorage.getItem('highscore')
     // console.log(retrievedScores)
 
-    function displayWordList(difficulty) {
-        // for (let i = 0; i < words[difficulty].length; i++) 
-        for (let i = 0; i < 5; i++){
-            let li = document.createElement("li")
-            li.classList.add('word')
-            // display 5 words only, updating each time wordCount increments
-            li.append(words[difficulty][wordCount+i])
-            wordDisplay.append(li)
-        }
-    }
-
-    function displayCurrentWord(count) {
-        let currentWordEl = document.querySelector('.current-word')
-        if (wordCount < words[level].length) {
-            return currentWordEl.innerHTML = words[level][count]
-        }
-        else {
-            return currentWordEl.innerHTML = ""
-        }
-    }
+  
 
     easyButton.addEventListener('click', function() {
         let liEl = document.querySelectorAll('.word')
@@ -138,17 +119,18 @@ window.onload = function() {
     //     }
     // })
 
+    //onchange
     inputEl.oninput = function() {
         
         let liEl = document.querySelectorAll('.word')
-    
-        displayCurrentWord(wordCount)
-
+        // displayCurrentWord(wordCount)
             if (wordCount !== words[level].length) {
                 if (inputEl.value === words[level][wordCount]) { 
                     liEl[wordCount].style.color = 'green'
                     liEl[wordCount].innerHTML = ""
                     wordCount += 1;
+                    displayCurrentWord(wordCount)
+
                     inputEl.value = ""
                     setCurrentScore()
                     return
@@ -177,7 +159,25 @@ window.onload = function() {
         scoreEl.innerHTML = score
     }
 
-    // for game over eventlistener
+    function displayWordList(difficulty) {
+        for (let i = 0; i < words[difficulty].length; i++) {
+             let li = document.createElement("li")
+             li.classList.add('word')
+             li.append(words[difficulty][i])
+             wordDisplay.append(li)
+         }
+     }
+ 
+     function displayCurrentWord(count) {
+         let currentWordEl = document.querySelector('.current-word')
+         if (wordCount < words[level].length) {
+             currentWordEl.innerHTML = words[level][count]
+         }
+         else {
+             currentWordEl.innerHTML = ""
+         }
+     }
+
     function setHighScore() {
         if (score > highScore) {
              highScore = score;
@@ -189,6 +189,9 @@ window.onload = function() {
     }
 
     function gameOver() {
+
+    }
+    function startGame() {
 
     }
 
