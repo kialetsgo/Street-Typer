@@ -1,14 +1,20 @@
 .word-list {
-    list-style: none;
+  list-style: none;
 }
 
 input {
-    width: 250px;
-    text-align:center;
+  width: 250px;
+  text-align: center;
+}
+.display {
+  display: block;
 }
 
+.hide {
+  display: none;
+}
 footer {
-    position: absolute;
-    bottom: 10px;
-    right: 50px;
+  position: absolute;
+  bottom: 10px;
+  right: 50px;
 }
