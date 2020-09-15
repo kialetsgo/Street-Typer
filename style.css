@@ -1,3 +1,6 @@
+.heading {
+  background-color: whitesmoke;
+}
 .word-list {
   list-style: none;
 }
@@ -8,10 +11,18 @@ input {
 }
 .display {
   display: block;
+  color: blue;
 }
 
 .hide {
   display: none;
+}
+
+.current-word-container {
+  padding: 20px;
+}
+.current-word {
+  font-size: 72px;
 }
 footer {
   position: absolute;
