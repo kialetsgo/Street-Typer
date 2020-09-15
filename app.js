@@ -227,12 +227,12 @@ function compareWords() {
   } else {
     gameOver();
   }
-  setHighScore();
 }
 
 function gameOver() {
   $('#game-over').modal('show');
   countdown = 0;
+  setHighScore();
   // clear input field
   inputEl.value = '';
   // clear word display
