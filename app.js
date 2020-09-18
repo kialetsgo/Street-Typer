@@ -18,12 +18,6 @@
 // beautify
 // include sound effects
 
-// normal:
-// first 10: 4 letter words
-// next 5: 6 letter word
-// next 5: 8 letter word
-// next 2: 10 letter word
-
 // ########################## //
 
 let originalWordArray = [
