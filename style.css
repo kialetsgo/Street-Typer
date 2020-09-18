@@ -155,6 +155,7 @@ div .fight-animation {
 }
 
 #backdrop {
+  /* margin-top: 20px; */
   width: 600px;
   height: 100%;
 }
