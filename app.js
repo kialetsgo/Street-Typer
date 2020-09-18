@@ -3,28 +3,26 @@
 // ###### GAME LOGIC ###### //
 
 // CURRENT FEATURES
-// timer-based typing game within 30 seconds
+// time-based typing game
 // words are randomized every time game is restarted
-// points given according to word length
-// inputfield will auto clear if inputfield value length > inputfield length
-// minus 1 point for every wrong input
-// game over screen with restart button after game is over
 // word display list will only show maximum 5 words
+// word display list will "scroll" everytime a word is typed
+// End game condition: given 30 seconds, finish typing all words given or when time = 0
+// points given according to word length
+// inputfield will auto clear if inputfield value length =  word length + 1
+// minus 1 point for every wrong input
+// game over screen with restart button after the game is over
+// local storage for high score
 
 // DOING
-// local storage for high score
+// beautify
+// include sound effects
 
 // normal:
 // first 10: 4 letter words
 // next 5: 6 letter word
 // next 5: 8 letter word
 // next 2: 10 letter word
-
-// CURRENT BUGS
-
-// FIXED BUGS
-
-// BASIC FUNCTIONALITY
 
 // ########################## //
 
@@ -102,12 +100,24 @@ let highScoreEl = document.querySelector('.high-score');
 let wordDisplayEl = document.querySelector('.word-list');
 let timerEl = document.querySelector('.seconds');
 let currentWordEl = document.querySelector('.current-word');
+let ryuIdle = document.querySelector('#ryu-idle');
+let ryuHadoken = document.querySelector('#ryu-hadoken');
+let boss = document.querySelector('#boss');
+
+// modal
+let modalGameStartEl = document.querySelector('.modal-gamestart');
+let modalCoverEl = document.querySelector('.modal-cover');
+let modalGameOverEl = document.querySelector('.modal-gameover');
+let modalInstructionEl = document.querySelector('.modal-instructions');
+let modalScoreEl = document.querySelector('#modal-score');
+let modalHighScoreEl = document.querySelector('#modal-highscore');
 
 // buttons
 let easyButton = document.querySelector('#easy');
 let hardButton = document.querySelector('#hard');
 let restartButton = document.querySelector('#restart');
 
+// functions
 function shuffleWords() {
   let newWordArray1 = [];
   let newWordArray2 = [];
@@ -128,13 +138,13 @@ function shuffleWords() {
     // DESC -> b.length - a.length
     return a.length - b.length;
   });
-  console.log(newWordArray1);
+  // console.log(newWordArray1);
   newWordArray2.sort(function (a, b) {
     // ASC  -> a.length - b.length
     // DESC -> b.length - a.length
     return a.length - b.length;
   });
-  console.log(newWordArray2);
+  // console.log(newWordArray2);
   words.push(newWordArray1, newWordArray2);
 }
 
@@ -147,6 +157,27 @@ function deductScore() {
   if (score > 0) {
     score -= 1;
     scoreEl.innerHTML = score;
+  }
+}
+
+function setHighScore() {
+  if (score > highScore) {
+    highScore = score;
+    highScoreEl.innerHTML = highScore;
+    modalHighScoreEl.innerHTML = 'High Score: ' + highScore;
+    localStorage.setItem('highScore', JSON.stringify(highScore));
+  }
+  modalHighScoreEl.innerHTML = 'High Score: ' + highScore;
+  // score = 0;
+  // scoreEl.innerHTML = score;
+}
+
+function displayHighScore() {
+  let retrievedScores = localStorage.getItem('highScore');
+  // after page refresh, highScore is being set back to 0, need to
+  highScore = retrievedScores;
+  if (highScoreEl.innerHTML === '') {
+    highScoreEl.innerHTML = retrievedScores;
   }
 }
 
@@ -176,7 +207,7 @@ function startTimer() {
       countdown = countdown - 1000;
       return;
     }
-    timerEl.innerHTML = countdown / 1000; // display time 0
+    timerEl.innerHTML = countdown / 1000;
     gameOver();
   }, 1000);
 }
@@ -190,16 +221,6 @@ function displayCurrentWord(count) {
   }
 }
 
-function setHighScore() {
-  if (score > highScore) {
-    highScore = score;
-    highScoreEl.innerHTML = highScore;
-    //  localStorage.setItem('highScore', highScore)
-  }
-  score = 0;
-  scoreEl.innerHTML = score;
-}
-
 function compareWords() {
   let liEl = document.querySelectorAll('.word');
   // only run for as long as the array length
@@ -208,6 +229,8 @@ function compareWords() {
       liEl[wordCount].style.color = 'green';
       liEl[wordCount].innerHTML = '';
       wordCount += 1;
+      hadokenOn();
+      bossHit();
       // display next word
       displayCurrentWord(wordCount);
       // resetting input field
@@ -216,7 +239,7 @@ function compareWords() {
       // update word list with next 5 words
       displayWordList(wordCount);
     } else if (
-      inputEl.value.length === words[level][wordCount].length &&
+      inputEl.value.length === words[level][wordCount].length + 1 &&
       inputEl.value !== words[level][wordCount]
     ) {
       inputEl.value = '';
@@ -228,11 +251,25 @@ function compareWords() {
     gameOver();
   }
 }
-
+function hadokenOn() {
+  ryuIdle.style.display = 'none';
+  ryuHadoken.style.display = 'inline-block';
+  setTimeout(() => {
+    ryuHadoken.style.display = 'none';
+    ryuIdle.style.display = 'inline-block';
+  }, 500);
+}
+function bossHit() {
+  setTimeout(() => {
+    boss.classList.add('boss-shake');
+    setTimeout(() => {
+      boss.classList.remove('boss-shake');
+    }, 500);
+  }, 500);
+}
 function gameOver() {
-  $('#game-over').modal('show');
   countdown = 0;
-  setHighScore();
+  modalScoreEl.innerHTML = 'Your Final Score is ' + scoreEl.innerHTML;
   // clear input field
   inputEl.value = '';
   // clear word display
@@ -240,14 +277,51 @@ function gameOver() {
   for (let i = 0; i < liEl.length; i++) {
     liEl[i].innerHTML = '';
   }
+  setHighScore();
+  showGameOverModal();
 }
 
+function showInstructionModal() {
+  modalCoverEl.style.display = 'block';
+  modalInstructionEl.style.display = 'block';
+}
+function hideInstructionModal() {
+  modalCoverEl.style.display = 'none';
+  modalInstructionEl.style.display = 'none';
+}
+function showGameStartModal() {
+  modalCoverEl.style.display = 'block';
+  modalGameStartEl.style.display = 'block';
+}
+function hideGameStartModal() {
+  modalCoverEl.style.display = 'none';
+  modalGameStartEl.style.display = 'none';
+}
+function showGameOverModal() {
+  modalCoverEl.style.display = 'block';
+  modalGameOverEl.style.display = 'block';
+}
+function hideGameOverModal() {
+  modalCoverEl.style.display = 'none';
+  modalGameOverEl.style.display = 'none';
+}
+
+// actual deployment
 window.onload = function () {
-  $('#game-start').modal('show');
+  hideGameOverModal();
+  showGameStartModal();
   shuffleWords();
+  displayHighScore();
   timerEl.innerHTML = countdown / 1000;
+
   // let retrievedScores = localStorage.getItem('highscore')
   // console.log(retrievedScores)
+
+  modalGameStartEl.addEventListener('click', function () {
+    hideGameStartModal();
+    showInstructionModal();
+  });
+
   easyButton.addEventListener('click', function () {
     let liEl = document.querySelectorAll('.word');
     if (liEl.length == 0) {
@@ -255,7 +329,7 @@ window.onload = function () {
       generateWordList(level);
       displayWordList(wordCount);
       displayCurrentWord(wordCount);
-      $('#game-start').modal('hide');
+      hideInstructionModal();
     }
   });
 
@@ -263,17 +337,16 @@ window.onload = function () {
     let liEl = document.querySelectorAll('.word');
     if (liEl.length == 0) {
       level = 1;
-      // countdown = 30000;
       generateWordList(level);
       displayWordList(wordCount);
       displayCurrentWord(wordCount);
-      $('#game-start').modal('hide');
+      hideInstructionModal();
     }
   });
 
   restartButton.addEventListener('click', function () {
     location.reload();
-    $('#game-over').modal('hide');
+    hideGameOverModal();
   });
 
   inputEl.oninput = function () {

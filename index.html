@@ -15,110 +15,100 @@
       integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
       crossorigin="anonymous"
     />
+    <link
+      href="https://fonts.googleapis.com/css?family=Press+Start+2P|Permanent+Marker"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="style.css" />
-    <title>TypeRacer2000</title>
+    <title>Street Typer</title>
   </head>
   <body>
-    <div class="container text-center">
-      <div class="heading">
-        <h1>TypeRacer2000</h1>
-      </div>
-    </div>
-    <div class="container text-center word-display">
-      <div class="row">
-        <div class="col">
-          <h3>Time Left</h3>
-          <h3 class="seconds"></h3>
+      <header class="text-center">
+        <h1>StreetTyper</h1>
+      </header>
+      <div class="container text-center word-display">
+        <div class="row">
+          <div class="col">
+            <h4>Time Left</h4>
+            <h4 class="seconds"></h4>
+          </div>
+          <div class="col">
+            <ul class="word-list">
+              <h4>Words</h4>
+            </ul>
+          </div>
+          <div class="col-4 text-center">
+            <h3 class="current-word"></h3>
+            <input
+              type="text"
+              id="word-input"
+              placeholder="Enter the text above to begin"
+            />
+          </div>
+          <div class="col">
+            <h4>Score</h4>
+            <h4 class="current-score">0</h4>
+          </div>
+          <div class="col">
+            <h4>High Score</h4>
+            <h4 class="high-score"></h4>
+          </div>
         </div>
-        <div class="col">
-          <ul class="word-list">
-            <h3>Words</h3>
-          </ul>
+        <div class="container text-center fight-animation">
+          <img id="backdrop" src="imgs/sf-arena-backdrop.jpeg">
+          <div class="gifs">
+            <img class="gifs" id="ryu-idle" src="gifs/ryu-stance.gif">
+            <img class="gifs" id="ryu-hadoken" src="gifs/ryu-hadoken.gif" style="display: none;">
+          </div>
+          <img id="boss" src="imgs/bowser.png">
+          </div>
         </div>
-        <div class="col-6 current-word-container">
-          <h3 class="current-word"></h3>
-          <input
-            type="text"
-            id="word-input"
-            placeholder="Enter the text above to begin"
-          />
-        </div>
-        <div class="col">
-          <h4>Current Score</h4>
-          <h5 class="current-score"></h5>
-        </div>
-        <div class="col">
-          <h4>High Score</h4>
-          <h5 class="high-score"></h5>
-        </div>
-      </div>
-      <!-- <div class="input-field">
-       
-      </div> -->
-    </div>
+    
 
-    <!-- Modal -->
-    <div
-      class="modal fade"
-      id="game-start"
-      data-backdrop="static"
-      data-keyboard="false"
-      tabindex="-1"
-      aria-labelledby="staticBackdropLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-            <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button> -->
-          </div>
-          <div class="modal-body">...</div>
-          <div class="modal-footer">
-            <button type="button" id="easy" class="btn btn-primary">
-              Easy
-            </button>
-            <button type="button" id="hard" class="btn btn-primary">
-              Hard
-            </button>
-          </div>
+    <!-- Starting Modal -->
+    <div class="modal-gamestart" id="game-start">
+      <div class="gamestart-content text-center">
+        <div class="gamestart-header">
+          <img src="imgs/street.png" />
+          <img src="imgs/typer.png" />
+        </div>
+        <div class="gamestart-body">
+          <h4 class="blinking">Click anywhere to start</h4>
         </div>
       </div>
     </div>
+    <div class="modal-cover"></div>
 
-    <div
-      class="modal fade"
-      id="game-over"
-      data-backdrop="static"
-      data-keyboard="false"
-      tabindex="-1"
-      aria-labelledby="staticBackdropLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-            <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button> -->
-          </div>
-          <div class="modal-body">...</div>
-          <div class="modal-footer">
-            <button type="button" id="restart" class="btn btn-primary">
-              Restart
-            </button>
-          </div>
+    <!-- Instructions and Level Selection Modal -->
+    <div class="modal-instructions">
+      <div class="instructions-content text-center">
+        <div class="instructions-body">
+          <h1>Game Instructions</h1>
+          <p>Type as many words as you can within 35 seconds!</p>
+          <h3>Scoring System:</h3>
+          <p>For every correct word typed: + X points;<br>where X = number of letters the word has<br><br>For every incorrect attempt: deduct 1 point</p>
+        </div>
+        <div class="instructions-footer">
+          <button type="button" id="easy" class="btn btn-primary">Easy</button>
+          <button type="button" id="hard" class="btn btn-primary">Hard</button>
         </div>
       </div>
     </div>
-
-    <!-- <footer>
-      Made by
-      <span>Kia Leng</span>
-    </footer> -->
+    <div class="modal-cover"></div>
+    <!-- Game Over Modal -->
+    <div class="modal-gameover" id="game-over">
+      <div class="gameover-content text-center">
+        <div class="gameover-body">
+          <h1>GAME OVER</h1>
+          <h6 id="modal-score"></h5>
+          <h6 id="modal-highscore"></h5>
+        </div>
+        <button type="button" id="restart" class="btn btn-primary">
+          Restart
+        </button>
+      </div>
+    </div>
+    <div class="modal-cover"></div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -138,6 +128,5 @@
       crossorigin="anonymous"
     ></script>
     <script src="app.js"></script>
-    <!-- <script src="app2.js"></script> -->
   </body>
 </html>
