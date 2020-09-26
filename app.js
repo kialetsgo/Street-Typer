@@ -16,7 +16,8 @@
 
 // DOING
 // beautify
-// include sound effects
+// to seperate high scores for easy and hard mode
+// refactor code
 
 // ########################## //
 
@@ -392,9 +393,9 @@ window.onload = function () {
   displayHighScore();
   timerEl.innerHTML = countdown / 1000;
 
-  // modalGameStartEl.addEventListener('mouseover', function () {
-  //   playTitleMusic();
-  // });
+  modalGameStartEl.addEventListener('mouseover', function () {
+    playTitleMusic();
+  });
 
   modalGameStartEl.addEventListener('click', function () {
     startGameSoundEffect();
