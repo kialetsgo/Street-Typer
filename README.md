@@ -7,6 +7,7 @@ A simple speed typing game, get as many as you can within 35 seconds. You will b
 
 ## Modes
 Easy: Array of short to medium length words.
+
 Hard: Array of medium to long words.
 
 ## Current Features
